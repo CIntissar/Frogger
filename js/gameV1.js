@@ -29,11 +29,13 @@ let timerText;
 let counter;
 let countdownTimer;
 let deadFrog;
-let savedFrog;
+let savedFrog = 0;
 let jumpSound;
 let traficSound;
 let smashSound;
-
+let counterSafeText;
+let life = 3;
+let lifeImage = [];
 
 function init() {
    
@@ -51,6 +53,7 @@ function preload() {
     this.load.image('car0','./assets/images/car.png');
     this.load.image('car1','./assets/images/F1-1.png');
     this.load.image('car2','./assets/images/snowCar.png');
+    this.load.image('life','./assets/images/life.png');
 
     //Music
     this.load.audio('paf', './assets/audio/smashed.wav');
@@ -73,10 +76,13 @@ function create() {
     backgroundImage = this.add.image(0,0,'background');
     backgroundImage.setOrigin(0,0);
     
-    timerText = this.add.text(428, 12, "", { fontFamily: 'carterOne', fontSize: 20, color: '#ffffff'});
+    counterSafeText = this.add.text(400,5,'',{ fontFamily: 'carterOne', fontSize: 15, color: '#ffffff',});
+    
+
+    timerText = this.add.text(420, 18, "", { fontFamily: 'carterOne', fontSize: 15, color: '#ffffff'});
     countdownTimer = this.time.addEvent({
         delay: 1000,
-        callback: countdown, 
+        callback: deathType, 
         callbackScope: this, 
         repeat: -1,
         paused: true
@@ -85,9 +91,8 @@ function create() {
     
     frog = this.add.image(241,296,'frog');
     deadFrog = this.add.image(-100,100,'death');
-    
-    let nbrCaseMumFrog = Phaser.Math.Between(0,25);
 
+    let nbrCaseMumFrog = Phaser.Math.Between(0,20);
 
     mumfrog = this.add.image(nbrCaseMumFrog * 16,0,'mumfrog');
     mumfrog.setOrigin(0,0);
@@ -138,7 +143,8 @@ function create() {
     playButton.setVisible(true);
     playButton.on('pointerdown', gameStart);
 
-    scoreText = this.add.text(100,160, '', { fontFamily: 'carterOne', fontSize: 20, color: '#ffffff'});
+    scoreText = this.add.text(100,10, '', { fontFamily: 'carterOne', fontSize: 20, color: '#000000'});
+
 
     jumpSound = this.sound.add('jump');
     smashSound = this.sound.add('paf');
@@ -148,6 +154,13 @@ function create() {
 }
 
 function update() {
+
+    counterSafeText.text = "Score: " + savedFrog;
+
+    for(let i=0; i<life; i++){
+        lifeImage[i]= this.add.image(420 + i * 10,40,'life');
+    }
+
     if(!onWelcomeScreen){
         if(Phaser.Input.Keyboard.JustDown(down)&& frog.y <304){
             frog.y += 16;
@@ -195,6 +208,7 @@ function update() {
         if(Phaser.Geom.Intersects.RectangleToRectangle(frog.getBounds(),car[i].getBounds())){
         smashSound.play();
         deadFrog.setPosition(frog.x,frog.y);
+        life--;
 
         frog.x = -100;
 
@@ -211,6 +225,7 @@ function gameStart(){
     scoreText.setVisible(false);
     savedFrog = 0;
     counter = 60;
+    life = 3;
 
     traficSound.play({loop:true});
 }
@@ -224,10 +239,11 @@ function loadFont(name, url) {
     }); 
 } 
 
-function countdown(){
+function deathType(){
     counter--;
     timerText.text = counter
-    if(counter == 0) gameOver();
+    if(counter == 0 || life == 0) gameOver();
+    
 }
 
 function reborn(){
