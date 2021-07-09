@@ -1,0 +1,36 @@
+Attention aux modifications des points d'encrage
+car cela influencera sa rotation.
+
+Ici comme elle doit se déplacer de manière précise
+selon des cubes de 16x16, il faut adapter la position
+de la grenouille selon ces données.
+
+/!\ A bien faire attention à la taille en pixel du perso
+ici la grenouille fait 12x13
+
+---
+
+   for(let j=0; j<3; j++){
+        for (let i=0; i<10; i++) {
+            let index = i + j * 10;
+
+
+Voici comment marche la boucle:
+
+let index = i + j * 10;
+
+i = 0 , j = 0  -> 0 + 0 * 10 = 0
+
+i= 1 , j = 0 -> 1 + 0 * 10 = 1
+
+i = 9 , j 2 = -> 9 + 2 * 10 = 29
+
+---
+
+Ma solution qwq
+car[i].x = -50 + Phaser.Math.Between(0,46);
+
+---
+
+Tiled -> programme dispo sur Itch.io -> permet de créer un niveau
+grâce à des Tiles
