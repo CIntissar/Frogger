@@ -157,9 +157,9 @@ function update() {
 
     counterSafeText.text = "Score: " + savedFrog;
 
-    for(let i=0; i<life; i++){
-        lifeImage[i]= this.add.image(420 + i * 10,40,'life');
-    }
+    // for(let i=0; i<life; i++){
+    //     lifeImage[i]= this.add.image(420 + i * 10,40,'life');
+    // }
 
     if(!onWelcomeScreen){
         if(Phaser.Input.Keyboard.JustDown(down)&& frog.y <304){
@@ -255,7 +255,7 @@ function gameOver(){
     countdownTimer.paused = true;
     titleScreen.setVisible(true);
     playButton.setVisible(true);
-    scoreText.text = "Vous avez sauvé " + savedFrog + " grenouille(s)!"
+    scoreText.text = "You saved " + savedFrog + " frog(s)!"
     scoreText.setVisible(true);
 
 
